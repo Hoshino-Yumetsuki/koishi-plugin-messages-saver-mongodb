@@ -1,7 +1,7 @@
 {
   "name": "@hieuzest/koishi-plugin-messages",
   "description": "Save messages to database",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -9,14 +9,12 @@
     "dist"
   ],
   "license": "MIT",
-  "scripts": {},
   "keywords": [
     "chatbot",
     "koishi",
     "plugin"
   ],
-  "devDependencies": {},
   "peerDependencies": {
-    "koishi": "^4.17.0-alpha.0"
+    "koishi": "^4.16.1"
   }
 }
