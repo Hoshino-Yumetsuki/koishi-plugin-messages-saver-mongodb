@@ -8,6 +8,8 @@ declare module 'koishi' {
 
 export const name = 'messages'
 
+export const inject = ['database']
+
 export interface Config {}
 
 export const Config: Schema<Config> = Schema.object({})
