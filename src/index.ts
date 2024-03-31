@@ -23,7 +23,7 @@ export function apply(ctx: Context) {
     guildId: 'string',
     userId: 'string',
     username: 'string',
-    content: 'string',
+    content: 'text',
     createdAt: 'timestamp',
     updatedAt: 'timestamp',
   })
