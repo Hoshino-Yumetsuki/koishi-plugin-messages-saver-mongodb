@@ -28,11 +28,11 @@ export const Config: Schema<Config> = Schema.object({
 let client: MongoClient
 let messagesCollection: any
 
-async function connectToDatabase(mongoUri: string, dbName: string) {
+async function connectToDatabase(mongoUri: string, dbName: string, collectionName:string) {
   client = new MongoClient(mongoUri)
   await client.connect()
   const database = client.db(dbName)
-  messagesCollection = database.collection(dbName)
+  messagesCollection = database.collection(collectionName)
   console.log('MongoDB connected successfully.')
 }
 
@@ -47,7 +47,7 @@ async function reconnect(config: Config) {
 }
 
 export async function apply(ctx: Context, config: Config) {
-  await connectToDatabase(config.mongoUri, config.dbName)
+  await connectToDatabase(config.mongoUri, config.dbName, config.collectionName)
 
   ctx.on('message', async (session) => {
     try {
