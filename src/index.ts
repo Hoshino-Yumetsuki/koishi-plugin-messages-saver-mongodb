@@ -28,26 +28,26 @@ export const Config: Schema<Config> = Schema.object({
 let client: MongoClient
 let messagesCollection: any
 
-async function connectToDatabase(mongoUri: string, dbName: string, collectionName:string) {
+async function connectToDatabase(mongoUri: string, dbName: string, collectionName: string, ctx: Context) {
   client = new MongoClient(mongoUri)
   await client.connect()
   const database = client.db(dbName)
   messagesCollection = database.collection(collectionName)
-  console.log('MongoDB connected successfully.')
+  ctx.logger.info('MongoDB connected successfully.')
 }
 
-async function reconnect(config: Config) {
+async function reconnect(config: Config, ctx: Context) {
   try {
     await client.connect()
-    console.log('MongoDB reconnected successfully.')
+    ctx.logger.info('MongoDB reconnected successfully.')
   } catch (error) {
-    console.error('MongoDB reconnection failed:', error)
-    setTimeout(() => reconnect(config), config.reconnectDelay) // 使用配置的重连延迟
+    ctx.logger.error('MongoDB reconnection failed:', error)
+    setTimeout(() => reconnect(config, ctx), config.reconnectDelay) // 使用配置的重连延迟
   }
 }
 
 export async function apply(ctx: Context, config: Config) {
-  await connectToDatabase(config.mongoUri, config.dbName, config.collectionName)
+  await connectToDatabase(config.mongoUri, config.dbName, config.collectionName, ctx)
 
   ctx.on('message', async (session) => {
     try {
@@ -66,7 +66,7 @@ export async function apply(ctx: Context, config: Config) {
       }
     } catch (error) {
       ctx.logger.error('Error inserting message:', error)
-      reconnect(config)
+      reconnect(config, ctx)
     }
   })
 
@@ -90,7 +90,7 @@ export async function apply(ctx: Context, config: Config) {
       }
     } catch (error) {
       ctx.logger.error('Error updating message:', error)
-      reconnect(config)
+      reconnect(config, ctx)
     }
   })
 }
