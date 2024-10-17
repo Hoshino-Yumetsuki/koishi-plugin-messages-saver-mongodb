@@ -2,6 +2,8 @@ lib
 dist
 external
 
+.yarn
+
 node_modules
 npm-debug.log
 yarn-debug.log
@@ -16,3 +18,13 @@ tsconfig.tsbuildinfo
 *.ntvs*
 *.njsproj
 *.sln
+
+*.test.ts
+*.test.tsx
+*.test.js
+*.test.jsx
+
+# use yakumo!!!
+yarn.lock
+package-lock.json
+.pnp.js

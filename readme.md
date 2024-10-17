@@ -1,5 +1,5 @@
-# @hieuzest/koishi-plugin-messages
+# @q78kg/koishi-plugin-messages-saver-mongodb
 
-[![npm](https://img.shields.io/npm/v/@hieuzest/koishi-plugin-messages?style=flat-square)](https://www.npmjs.com/package/@hieuzest/koishi-plugin-messages)
+[![npm](https://img.shields.io/npm/v/@q78kg/koishi-plugin-messages-saver-mongodb?style=flat-square)](https://www.npmjs.com/package/@q78kg/koishi-plugin-messages-saver-mongodb)
 
 Save messages to database

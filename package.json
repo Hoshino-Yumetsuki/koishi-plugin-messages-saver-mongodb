@@ -1,7 +1,7 @@
 {
-  "name": "@hieuzest/koishi-plugin-messages",
-  "description": "Save messages to database",
-  "version": "0.1.2",
+  "name": "@q78kg/koishi-plugin-messages-saver-mongodb",
+  "description": "Save messages to mongodb",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -15,6 +15,11 @@
     "plugin"
   ],
   "peerDependencies": {
-    "koishi": "^4.16.1"
+    "koishi": "^4.16.1",
+    "mongo": "^0.1.0"
+  },
+  "dependencies": {
+    "koishi": "^4.16.1",
+    "mongo": "^0.1.0"
   }
 }

@@ -1,55 +1,97 @@
 import { Context, Primary, Schema } from 'koishi'
+import { MongoClient } from 'mongodb'
 
 declare module 'koishi' {
   interface Tables {
-    '@hieuzest/messages': Message
+    '@q78kg/messages-saver-mongodb': Message
   }
 }
 
 export const name = 'messages'
 
-export const inject = ['database']
+export interface Config {
+  mongoUri: string
+  dbName: string
+  collectionName: string
+  debugMode: boolean
+  reconnectDelay: number
+}
 
-export interface Config {}
+export const Config: Schema<Config> = Schema.object({
+  mongoUri: Schema.string().required(),
+  dbName: Schema.string().default('koishi'),
+  collectionName: Schema.string().default('messages'),
+  debugMode: Schema.boolean().default(false),
+  reconnectDelay: Schema.number().default(5000), // 默认重连延迟为5秒
+})
 
-export const Config: Schema<Config> = Schema.object({})
+let client: MongoClient
+let messagesCollection: any
 
-export function apply(ctx: Context) {
-  ctx.model.extend('@hieuzest/messages', {
-    id: 'primary',
-    messageId: 'string',
-    platform: 'string',
-    channelId: 'string',
-    guildId: 'string',
-    userId: 'string',
-    username: 'string',
-    content: 'text',
-    createdAt: 'timestamp',
-    updatedAt: 'timestamp',
-  })
+async function connectToDatabase(mongoUri: string, dbName: string) {
+  client = new MongoClient(mongoUri)
+  await client.connect()
+  const database = client.db(dbName)
+  messagesCollection = database.collection(dbName)
+  console.log('MongoDB connected successfully.')
+}
+
+async function reconnect(config: Config) {
+  try {
+    await client.connect()
+    console.log('MongoDB reconnected successfully.')
+  } catch (error) {
+    console.error('MongoDB reconnection failed:', error)
+    setTimeout(() => reconnect(config), config.reconnectDelay) // 使用配置的重连延迟
+  }
+}
+
+export async function apply(ctx: Context, config: Config) {
+  await connectToDatabase(config.mongoUri, config.dbName)
 
   ctx.on('message', async (session) => {
-    await ctx.database.create('@hieuzest/messages', {
-      messageId: session.messageId,
-      platform: session.platform,
-      channelId: session.channelId,
-      guildId: session.guildId,
-      userId: session.userId,
-      username: session.username,
-      content: session.content,
-      createdAt: new Date(session.timestamp),
-    })
+    try {
+      await messagesCollection.insertOne({
+        messageId: session.messageId,
+        platform: session.platform,
+        channelId: session.channelId,
+        guildId: session.guildId,
+        userId: session.userId,
+        username: session.username,
+        content: session.content,
+        createdAt: new Date(session.timestamp),
+      })
+      if (config.debugMode) {
+        ctx.logger.info(`Message saved: ${session.messageId}`)
+      }
+    } catch (error) {
+      ctx.logger.error('Error inserting message:', error)
+      reconnect(config)
+    }
   })
 
   ctx.on('message-updated', async (session) => {
-    await ctx.database.set('@hieuzest/messages', {
-      messageId: session.messageId,
-      platform: session.platform,
-      channelId: session.channelId,
-    }, {
-      content: session.content,
-      updatedAt: new Date(session.event.message.updatedAt ?? Date.now()),
-    })
+    try {
+      await messagesCollection.updateOne(
+        {
+          messageId: session.messageId,
+          platform: session.platform,
+          channelId: session.channelId,
+        },
+        {
+          $set: {
+            content: session.content,
+            updatedAt: new Date(session.event.message.updatedAt ?? Date.now()),
+          },
+        }
+      )
+      if (config.debugMode) {
+        ctx.logger.info(`Message updated: ${session.messageId}`)
+      }
+    } catch (error) {
+      ctx.logger.error('Error updating message:', error)
+      reconnect(config)
+    }
   })
 }
 
