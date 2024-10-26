@@ -20,11 +20,8 @@
     "koishi": "^4.16.1",
     "mongo": "^0.1.0"
   },
-  "dependencies": {
-    "koishi": "^4.16.1",
-    "mongo": "^0.1.0"
-  },
   "devDependencies": {
-    "eslint": "^9.13.0"
+    "eslint": "^9.13.0",
+    "mongo": "^0.1.0"
   }
 }
