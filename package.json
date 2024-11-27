@@ -2,7 +2,8 @@
   "name": "@q78kg/koishi-plugin-messages-saver-mongodb",
   "description": "Save messages to mongodb",
   "version": "1.0.3",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
+  "type": "module",
   "files": [
     "lib",
     "dist"
