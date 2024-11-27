@@ -3,7 +3,6 @@
   "description": "Save messages to mongodb",
   "version": "1.0.3",
   "main": "lib/index.js",
-  "type": "module",
   "files": [
     "lib",
     "dist"
