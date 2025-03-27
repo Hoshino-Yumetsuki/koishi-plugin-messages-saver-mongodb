@@ -17,11 +17,12 @@
     "plugin"
   ],
   "peerDependencies": {
-    "koishi": "^4.16.1",
-    "mongo": "^0.1.0"
+    "koishi": "^4.16.1"
   },
   "devDependencies": {
-    "eslint": "^9.13.0",
-    "mongo": "^0.1.0"
+    "eslint": "^9.13.0"
+  },
+  "dependencies": {
+    "mongodb": "^6.15.0"
   }
 }
