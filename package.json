@@ -1,28 +1,67 @@
 {
   "name": "@q78kg/koishi-plugin-messages-saver-mongodb",
   "description": "Save messages to mongodb",
-  "version": "1.0.3",
-  "main": "lib/index.js",
+  "version": "1.0.5",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "types": "lib/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "require": "./lib/index.cjs",
+      "import": "./lib/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
-    "lib",
-    "dist"
+    "lib"
   ],
-  "scripts": {
-    "build": "node esbuild.config.mjs"
-  },
   "license": "MIT",
+  "scripts": {
+    "build": "yakumo build --minify",
+    "publish": "yakumo publish",
+    "lint": "eslint src",
+    "lint-fix": "eslint src --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hoshino-Yumetsuki/koishi-plugin-messages-saver-mongodb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hoshino-Yumetsuki/koishi-plugin-messages-saver-mongodb/issues"
+  },
+  "homepage": "https://github.com/Hoshino-Yumetsuki/koishi-plugin-messages-saver-mongodb",
   "keywords": [
-    "chatbot",
     "koishi",
-    "plugin"
+    "mongodb",
+    "messages"
   ],
-  "peerDependencies": {
-    "koishi": "^4.16.1"
-  },
   "devDependencies": {
-    "eslint": "^9.13.0"
+    "@types/node": "^22.13.14",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "cordis": "^4.0.0-beta.0",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^17.17.0",
+    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-promise": "^7.2.1",
+    "koishi": "^4.18.7",
+    "prettier": "^3.5.3",
+    "rolldown": "1.0.0-beta.7",
+    "typescript": "^5.8.2",
+    "yakumo": "^2.0.0-alpha.4",
+    "yakumo-rolldown": "1.1.0-beta.5",
+    "yakumo-tsc": "^2.0.0-alpha.3"
   },
+  "packageManager": "yarn@4.9.0+sha512.5f5f00843eae735dfab6f0442524603e987ceca55e98b36eb0120f4e58908e5b1406545321e46627dca97d15d562f23dc13fb96cabd4e6bc92d379f619001e4e",
   "dependencies": {
     "mongodb": "^6.15.0"
+  },
+  "peerDependencies": {
+    "koishi": "^4.18.7"
   }
 }
